@@ -1,6 +1,7 @@
 package bootstrap
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
@@ -49,8 +50,9 @@ db:
 
 		assert.False(t, app.isBootstrapped)
 
-		app.Bootstrap()
+		err := app.Bootstrap()
 
+		assert.EqualError(t, err, fmt.Sprintf("can't open %s: no such file or directory", app.ConfigPath))
 		assert.False(t, app.isBootstrapped)
 	})
 
@@ -61,8 +63,9 @@ db:
 
 		assert.False(t, app.isBootstrapped)
 
-		app.Bootstrap()
+		err := app.Bootstrap()
 
+		assert.EqualError(t, err, "unsupported database mongodb")
 		assert.False(t, app.isBootstrapped)
 	})
 }
