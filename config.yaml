@@ -1,0 +1,7 @@
+app:
+  name: "Simple API"
+  port: 8080
+  debug: true
+db:
+  connection: sqlite
+  dbname: database.sqlite

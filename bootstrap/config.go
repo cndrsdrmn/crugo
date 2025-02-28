@@ -5,14 +5,8 @@ import (
 	"os"
 	"strings"
 
-	cfg "github.com/cndrsdrmn/crugo/config"
 	"github.com/spf13/viper"
 )
-
-type resource struct {
-	cfg.AppConfig `mapstructure:"app"`
-	cfg.DBConfig  `mapstructure:"db"`
-}
 
 func (app *App) bootConfiguration() error {
 	data, err := os.ReadFile(app.ConfigPath)
@@ -29,14 +23,9 @@ func (app *App) bootConfiguration() error {
 		return writeError(err, "read_config", app.ConfigPath)
 	}
 
-	var src resource
-
-	if err := rvn.Unmarshal(&src); err != nil {
+	if err := rvn.Unmarshal(&app.config); err != nil {
 		return writeError(err, "unmarshal_config")
 	}
-
-	cfg.App = &src.AppConfig
-	cfg.DB = &src.DBConfig
 
 	return nil
 }

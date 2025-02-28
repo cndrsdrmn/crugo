@@ -1,10 +1,11 @@
-package bootstrap
+package bootstrap_test
 
 import (
 	"fmt"
 	"os"
 	"testing"
 
+	. "github.com/cndrsdrmn/crugo/bootstrap"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -36,11 +37,11 @@ db:
 			ConfigPath: "/tmp/config.yaml",
 		}
 
-		assert.False(t, app.isBootstrapped)
+		assert.False(t, app.IsBootstrapped)
 
 		app.Bootstrap()
 
-		assert.True(t, app.isBootstrapped)
+		assert.True(t, app.IsBootstrapped)
 	})
 
 	t.Run("fail bootstraping configuration", func(t *testing.T) {
@@ -48,12 +49,12 @@ db:
 			ConfigPath: "/tmp/missing-config.yml",
 		}
 
-		assert.False(t, app.isBootstrapped)
+		assert.False(t, app.IsBootstrapped)
 
 		err := app.Bootstrap()
 
 		assert.EqualError(t, err, fmt.Sprintf("can't open %s: no such file or directory", app.ConfigPath))
-		assert.False(t, app.isBootstrapped)
+		assert.False(t, app.IsBootstrapped)
 	})
 
 	t.Run("fail bootstrapping database", func(t *testing.T) {
@@ -61,11 +62,11 @@ db:
 			ConfigPath: "/tmp/database-config.yaml",
 		}
 
-		assert.False(t, app.isBootstrapped)
+		assert.False(t, app.IsBootstrapped)
 
 		err := app.Bootstrap()
 
 		assert.EqualError(t, err, "unsupported database mongodb")
-		assert.False(t, app.isBootstrapped)
+		assert.False(t, app.IsBootstrapped)
 	})
 }
